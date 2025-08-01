@@ -11,7 +11,7 @@ function CategoryList() {
 
   
   useEffect(() => {
-    // استدعاء API جلب الكاتيجوريز
+   
     fetch("http://localhost:5000/api/categories")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch categories");
@@ -29,9 +29,15 @@ function CategoryList() {
 
   if (loading) return <p>Loading categories...</p>;
   if (error) return <p>Error: {error}</p>;
-  
+  if (categories.length === 0) return <p>No categories found.</p>;
+  if (!Array.isArray(categories)) {
+    return <p>Invalid categories data format.</p>;
+  }
+
+
   return (
     <section className="section category">
+      <h2 className="h2 section-title">Categories</h2>
       <div className="container">
         <ul className="category-list">
           {categories.map((cat, index) => (
@@ -42,6 +48,7 @@ function CategoryList() {
                   alt={cat.title}
                   loading="lazy"
                   className="w-100"
+
                 />
               </figure>
               <a href="#" className="btn btn-secondary">
