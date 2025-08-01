@@ -1,5 +1,8 @@
 
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
+
+import axios from "axios";
+
 import {
   IoEyeOutline,
   IoBagHandleOutline,
@@ -7,61 +10,23 @@ import {
   IoCloseOutline
 } from "react-icons/io5";
 
-const products = [
-  {
-    title: "Aurora Lamp",
-    image: "/imagesL/home.webp",
-    price: "48.75",
-    oldPrice: "65.00",
-    badge: "-25%",
-    badgeColor: "red",
-  },
-  {
-    title: "Glow Lamp",
-    image: "./imagesL/9.jpg",
-    price: "71.00",
-    badge: "New",
-    badgeColor: "green",
-  },
-  {
-    title: "Smart Moon Lamp",
-    image: "./imagesL/smart.jpg",
-    price: "32.00",
-  },
-  {
-    title: "Moon Lamp",
-    image: "./imagesL/images.jpg",
-    price: "84.00",
-  },
-  {
-    title: "Casper Lamp",
-    image: "./imagesL/casper.webp",
-    price: "30.00",
-    oldPrice: "38.00",
-  },
-  {
-    title: "Heart Lamp",
-    image: "./imagesL/3.jpg",
-    price: "85.00",
-    oldPrice: "99.00",
-  },
-   {
-    title: "Heart Lamp",
-    image: "./imagesL/3.jpg",
-    price: "85.00",
-    oldPrice: "99.00",
-  },
-   {
-    title: "Casper Lamp",
-    image: "./imagesL/casper.webp",
-    price: "30.00",
-    oldPrice: "38.00",
-  },
-];
+
 
 function ProductSection({ cart, setCart, wishlist, setWishlist }) {
   const [showCart, setShowCart] = useState(false);
   const iconSize = 22;
+
+  const [products, setProducts] = useState([]);
+  
+  useEffect(() => {
+  axios.get("http://localhost:5000/api/products") 
+    .then(res => {
+      setProducts(res.data); 
+    })
+    .catch(err => {
+      console.error("Failed to fetch products:", err);
+    });
+}, []);
 
   const handleAddToCart = (product) => {
     setCart([...cart, product]);
